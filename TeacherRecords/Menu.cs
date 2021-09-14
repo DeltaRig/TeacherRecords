@@ -33,6 +33,7 @@ namespace TeacherRecords
                 Console.ForegroundColor = ConsoleColor.White;
                 Console.WriteLine("1. See all teachers \n" +
                                   "2. Search teachers \n" + 
+                                  "3. Add new teacher \n" + 
                                   "0. exit");
                 option = Console.ReadLine();
                 switch (option)
@@ -41,10 +42,16 @@ namespace TeacherRecords
                         Console.ForegroundColor = ConsoleColor.Yellow;
                         Console.WriteLine("List of teachers: ");
                         Console.ForegroundColor = ConsoleColor.White;
-                        printList(teacherBiz.GetAllTeachers());
+                        PrintList(teacherBiz.GetAllTeachers());
                         break;
                     case "2":
-                        searchBy();
+                        SearchBy();
+                        break;
+                    case "3":
+                        AddNewTeacher();
+                        break;
+                    case "0":
+                        return;
                         break;
                     default:
                         Console.ForegroundColor = ConsoleColor.Yellow;
@@ -56,7 +63,7 @@ namespace TeacherRecords
 
         }
 
-        private void printList(IEnumerable<Teacher> list)
+        private void PrintList(IEnumerable<Teacher> list)
         {
             if (list == null || list.Count() == 0)
             {
@@ -71,11 +78,11 @@ namespace TeacherRecords
             }
         }
 
-        private void searchBy()
+        private void SearchBy()
         {
             string answer = "";
             Console.WriteLine("1. Search teachers by ID\n" +
-                             "2. Search teachers by name" +
+                             "2. Search teachers by name\n" +
                              "3. Search teachers by class\n" +
                              "4. Search teachers by section\n" +
                              "0. Come back to menu");
@@ -97,7 +104,7 @@ namespace TeacherRecords
                     Console.ForegroundColor = ConsoleColor.Yellow;
                     Console.WriteLine("List of teachers: ");
                     Console.ForegroundColor = ConsoleColor.White;
-                    printList(teacherBiz.GetTeachersByID(id));
+                    PrintList(teacherBiz.GetTeachersByID(id));
                     break;
                 case "2":
                     Console.WriteLine("What is the teacher name that you want search?");
@@ -105,7 +112,7 @@ namespace TeacherRecords
                     Console.ForegroundColor = ConsoleColor.Yellow;
                     Console.WriteLine("List of teachers: ");
                     Console.ForegroundColor = ConsoleColor.White;
-                    printList(teacherBiz.GetTeachersByName(answer));
+                    PrintList(teacherBiz.GetTeachersByName(answer));
                     break;
                 case "3":
                     Console.WriteLine("What is the class's teacher that you want search?");
@@ -113,7 +120,15 @@ namespace TeacherRecords
                     Console.ForegroundColor = ConsoleColor.Yellow;
                     Console.WriteLine("List of teachers: ");
                     Console.ForegroundColor = ConsoleColor.White;
-                    printList(teacherBiz.GetTeachersByClass(answer));
+                    PrintList(teacherBiz.GetTeachersByClass(answer));
+                    break;
+                case "4":
+                    Console.WriteLine("What is the section's teacher that you want search?");
+                    answer = Console.ReadLine();
+                    Console.ForegroundColor = ConsoleColor.Yellow;
+                    Console.WriteLine("List of teachers: ");
+                    Console.ForegroundColor = ConsoleColor.White;
+                    PrintList(teacherBiz.GetTeachersBySection(answer));
                     break;
                 default:
                     Console.ForegroundColor = ConsoleColor.Yellow;
@@ -122,6 +137,44 @@ namespace TeacherRecords
                     break;
             }
             
+        }
+
+        private void AddNewTeacher()
+        {
+            string verify = "0";
+            string name;
+            string classe;
+            string section;
+            do
+            {
+                Console.WriteLine("What is the name of teacher?");
+                name = Console.ReadLine();
+                Console.WriteLine("What is the class of teacher?");
+                classe = Console.ReadLine();
+                Console.WriteLine("What is the section of teacher?");
+                section = Console.ReadLine();
+                Console.ForegroundColor = ConsoleColor.Yellow;
+                Console.WriteLine("Name: " + name + "\nClass: " + classe + "\nSection: " + section);
+                Console.ForegroundColor = ConsoleColor.White;
+                Console.WriteLine("1. Confirm\n" +
+                                  "2. Try write again\n" +
+                                  "0. Cancel and come back to menu\n");
+                verify = Console.ReadLine();
+                if (verify.Equals("0"))
+                    return;
+
+            } while (!verify.Equals("1"));
+
+            if( teacherBiz.AddTeacher(name, classe, section))
+            {
+                Console.ForegroundColor = ConsoleColor.Blue;
+                Console.WriteLine("Teacher added with success!");
+                Console.ForegroundColor = ConsoleColor.White;
+            }
+
+            
+
+
         }
     }
 }

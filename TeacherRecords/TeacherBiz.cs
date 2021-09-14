@@ -11,24 +11,20 @@ namespace TeacherRecords
     {
         private List<Teacher> _teachers;
         private long _biggestID;
+        private string PATH = "./records.txt";
 
         public TeacherBiz()
         {
             _teachers = new List<Teacher>();
             UpdateDataCache();
         }
-        public TeacherBiz(List<Teacher> teachers)
-        {
-            _teachers = teachers;
-        }
 
         public void UpdateDataCache()
         {
             List<Teacher> teachers = new List<Teacher>();
-            string path = ".\records.txt";
             try
             {
-                string[] lines = System.IO.File.ReadAllLines(path);
+                string[] lines = System.IO.File.ReadAllLines(PATH);
                 foreach (string line in lines)
                 {
                     string[] lineToTeacher = line.Split(';');
@@ -46,15 +42,21 @@ namespace TeacherRecords
             catch (FileNotFoundException e)
             {
                 Console.WriteLine("File not found, should be in the same folder that the app with the name records.txt");
+                Console.WriteLine("Don't delete this file");
                 Console.WriteLine("Creating a new file to solve this, will start empty");
 
-                System.IO.File.Create(path);
+                System.IO.File.Create(PATH);
                 _teachers = teachers;
             }
             catch (IOException ex)
             {
                 Console.WriteLine(ex);
             }
+        }
+
+        internal IEnumerable<Teacher> GetAllTeachers()
+        {
+            return _teachers;
         }
 
         /**
@@ -96,8 +98,28 @@ namespace TeacherRecords
         }
 
         // able to add teacher
-        internal Boolean AddTeacher(Teacher t)
+        internal Boolean AddTeacher(string name, string c, string section)
         {
+            try
+            {
+                _biggestID++;
+                Teacher t = new Teacher(_biggestID, name, c, section);
+                File.AppendAllText(PATH, t.ToSaveInFile() + "\n");
+                _teachers.Add(t);
+                return true;
+            }
+            catch (FileNotFoundException e) // to don't broke if someone delete the file while the programing is running
+            {
+                Console.WriteLine("File not found, should be in the same folder that the app with the name records.txt");
+                Console.WriteLine("Creating a new file to solve this, will start empty");
+
+                System.IO.File.Create(PATH);
+                
+            }
+            catch (IOException ex)
+            {
+                Console.WriteLine(ex);
+            }
             return false;
         }
 

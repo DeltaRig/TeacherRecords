@@ -50,5 +50,10 @@ namespace TeacherRecords
         {
             return "[" + _id + "] Name:" + _name + "; Class:" + _class + "; Section:" + _section + ";";
         }
+
+        public string ToSaveInFile()
+        {
+            return _id + ";" + _name + ";" + _class + ";" + _section;
+        }
     }
 }
