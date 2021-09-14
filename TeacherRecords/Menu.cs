@@ -90,7 +90,7 @@ namespace TeacherRecords
             switch (answer)
             {
                 case "1":
-                    Console.WriteLine("What is the teacher ID that you want search?");
+                    Console.WriteLine("What is the ID's teacher that you want search?");
                     answer = Console.ReadLine();
                     long id = -1L;
                     try
@@ -107,7 +107,7 @@ namespace TeacherRecords
                     PrintList(teacherBiz.GetTeachersByID(id));
                     break;
                 case "2":
-                    Console.WriteLine("What is the teacher name that you want search?");
+                    Console.WriteLine("What is the name's teacher that you want search?");
                     answer = Console.ReadLine();
                     Console.ForegroundColor = ConsoleColor.Yellow;
                     Console.WriteLine("List of teachers: ");
@@ -147,11 +147,11 @@ namespace TeacherRecords
             string section;
             do
             {
-                Console.WriteLine("What is the name of teacher?");
+                Console.WriteLine("What is the name's teacher?");
                 name = Console.ReadLine();
-                Console.WriteLine("What is the class of teacher?");
+                Console.WriteLine("What is the class's teacher?");
                 classe = Console.ReadLine();
-                Console.WriteLine("What is the section of teacher?");
+                Console.WriteLine("What is the section's teacher?");
                 section = Console.ReadLine();
                 Console.ForegroundColor = ConsoleColor.Yellow;
                 Console.WriteLine("Name: " + name + "\nClass: " + classe + "\nSection: " + section);

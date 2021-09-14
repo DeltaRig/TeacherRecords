@@ -104,7 +104,9 @@ namespace TeacherRecords
             {
                 _biggestID++;
                 Teacher t = new Teacher(_biggestID, name, c, section);
-                File.AppendAllText(PATH, t.ToSaveInFile() + "\n");
+                if(_teachers.Count() > 0)
+                    File.AppendAllText(PATH, "\n");
+                File.AppendAllText(PATH,t.ToSaveInFile());
                 _teachers.Add(t);
                 return true;
             }
