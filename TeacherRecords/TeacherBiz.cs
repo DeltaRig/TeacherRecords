@@ -10,41 +10,51 @@ namespace TeacherRecords
     class TeacherBiz
     {
         private List<Teacher> _teachers;
+        private long _biggestID;
 
         public TeacherBiz()
         {
-            try
-            {
-                List<Teacher> teachers = new List<Teacher>();
-                string[] lines = System.IO.File.ReadAllLines(@".\records.txt");
-                foreach (string line in lines)
-                {
-                    string[] lineToTeacher = line.Split(';');
-                    teachers.Add(new Teacher(long.Parse(lineToTeacher[0]), lineToTeacher[1], lineToTeacher[2], lineToTeacher[3]));
-
-                    Console.WriteLine("\t" + line);
-                }
-                _teachers = teachers;
-            } catch (FileNotFoundException e)
-            {
-                Console.WriteLine("File not found, should be in the same folder that the app with the name records.txt");
-            }
-            catch (IOException ex)
-            {
-                Console.WriteLine(ex);
-            }
+            _teachers = new List<Teacher>();
+            UpdateDataCache();
         }
         public TeacherBiz(List<Teacher> teachers)
         {
             _teachers = teachers;
         }
 
-        /**
-         * @return all teachers
-        */
-        public List<Teacher> GetAllTeachers()
+        public void UpdateDataCache()
         {
-            return _teachers;
+            List<Teacher> teachers = new List<Teacher>();
+            string path = ".\records.txt";
+            try
+            {
+                string[] lines = System.IO.File.ReadAllLines(path);
+                foreach (string line in lines)
+                {
+                    string[] lineToTeacher = line.Split(';');
+
+                    long currentID = long.Parse(lineToTeacher[0]);
+                    if (currentID > _biggestID)
+                        _biggestID = currentID;
+
+                    teachers.Add(new Teacher(currentID, lineToTeacher[1], lineToTeacher[2], lineToTeacher[3]));
+
+                    Console.WriteLine("\t" + line);
+                }
+                _teachers = teachers;
+            }
+            catch (FileNotFoundException e)
+            {
+                Console.WriteLine("File not found, should be in the same folder that the app with the name records.txt");
+                Console.WriteLine("Creating a new file to solve this, will start empty");
+
+                System.IO.File.Create(path);
+                _teachers = teachers;
+            }
+            catch (IOException ex)
+            {
+                Console.WriteLine(ex);
+            }
         }
 
         /**
@@ -86,6 +96,11 @@ namespace TeacherRecords
         }
 
         // able to add teacher
+        internal Boolean AddTeacher(Teacher t)
+        {
+            return false;
+        }
+
         // able to update teacher
         // able to remove teacher
     }

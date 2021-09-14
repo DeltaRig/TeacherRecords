@@ -11,7 +11,8 @@ namespace TeacherRecords
     {
         private TeacherBiz teacherBiz;
         public Menu() {
-            teacherBiz = new TeacherBiz(
+            teacherBiz = new TeacherBiz();
+            /*teacherBiz = new TeacherBiz(
                 new List<Teacher>{
                     new Teacher(1L, "Jurema", "200", "Fisic"),
                     new Teacher(2L, "Lucas", "200", "DataBase"),
@@ -19,7 +20,7 @@ namespace TeacherRecords
                     new Teacher(4L, "Carlos", "202", "Literature"),
                     new Teacher(5L, "Carlos", "302", "Quimica")
                 }
-            );
+            );*/
         }
         public void Start()
         {
@@ -57,11 +58,12 @@ namespace TeacherRecords
 
         private void printList(IEnumerable<Teacher> list)
         {
-            if(list.Count() == 0)
+            if (list == null || list.Count() == 0)
             {
                 Console.ForegroundColor = ConsoleColor.Cyan;
                 Console.WriteLine("Not data found");
                 Console.ForegroundColor = ConsoleColor.White;
+                return;
             }
             foreach(Teacher t in list)
             {
