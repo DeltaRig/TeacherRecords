@@ -62,7 +62,7 @@ namespace TeacherRecords
         /**
          * @return teacher by ID
          */
-        internal IEnumerable<Teacher> GetTeachersByID(long id)
+        internal IEnumerable<Teacher> GetTeacherByID(long id)
         {
             var teachersByID = from teacher in _teachers
                                  where teacher.ID == id
@@ -105,12 +105,12 @@ namespace TeacherRecords
                 _biggestID++;
                 Teacher t = new Teacher(_biggestID, name, c, section);
                 if(_teachers.Count() > 0)
-                    File.AppendAllText(PATH, "\n");
+                    File.AppendAllText(PATH, Environment.NewLine);
                 File.AppendAllText(PATH,t.ToSaveInFile());
                 _teachers.Add(t);
                 return true;
             }
-            catch (FileNotFoundException e) // to don't broke if someone delete the file while the programing is running
+            catch (FileNotFoundException e) // to don't broke if someone delete the file while the program is running
             {
                 Console.WriteLine("File not found, should be in the same folder that the app with the name records.txt");
                 Console.WriteLine("Creating a new file to solve this, will start empty");
@@ -125,7 +125,15 @@ namespace TeacherRecords
             return false;
         }
 
-        // able to update teacher
         // able to remove teacher
+        internal Boolean RemoveTeacher(long id)
+        {
+            return false;
+
+        //        var lines = File.ReadAllLines(usersPath).Where(line => line.Trim() != item).ToArray();
+        //      File.WriteAllLines(usersPath, lines);
+        }
+        // able to update teacher
+
     }
 }
