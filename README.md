@@ -9,7 +9,8 @@ Write a program that will allow storing and updating teacher data using text fil
 
 Rainbow School is creating a system to store, retrieve and update teacher data. The first working draft will be based on using text-files to process teacher data.
 
-### You must use the following:
+### Environment:
+.NETFramework,Version=v4.7.2
 
 Visual Studio Windows Console Project
 
@@ -22,11 +23,3 @@ ID
 Name
 
 Class and section
-
-### Following requirements should be met:
-
-Some of the source code should be tracked on GitHub repositories. You need to document the tracked files which are ignored during the final push to the GitHub repository.
-
-The submission of your GitHub repository link is mandatory. In order to track your task, you need to share the link of the repository in the document.
-
-The step-by-step process involved in completing this task should be documented.
