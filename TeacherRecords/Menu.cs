@@ -31,10 +31,11 @@ namespace TeacherRecords
                 Console.ForegroundColor = ConsoleColor.Green;
                 Console.WriteLine("\nWellcome to a Teacher Records's Rainbow School");
                 Console.ForegroundColor = ConsoleColor.White;
-                Console.WriteLine("1. See all teachers \n" +
+                Console.WriteLine("1. See all teachers data\n" +
                                   "2. Search teachers \n" + 
-                                  "3. Add new teacher \n" +
-                                  "4. Remove teacher \n" +
+                                  "3. Add new teacher data\n" +
+                                  "4. Remove teacher data \n" +
+                                  "5. Update teacher data \n" +
                                   "0. exit");
                 option = Console.ReadLine();
                 switch (option)

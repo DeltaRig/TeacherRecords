@@ -11,10 +11,13 @@ namespace TeacherRecords
     {
         private List<Teacher> _teachers;
         private long _biggestID;
-        private string PATH = "./records.txt";
+        private string FILENAME = "\\records.txt";
+        private string path;
 
         public TeacherBiz()
         {
+            string dir = Directory.GetCurrentDirectory();
+            path = dir + FILENAME;
             _teachers = new List<Teacher>();
             _biggestID = 0;
             UpdateDataCache();
@@ -23,9 +26,11 @@ namespace TeacherRecords
         public void UpdateDataCache()
         {
             List<Teacher> teachers = new List<Teacher>();
-            try
+            Console.WriteLine(path);
+            if (File.Exists(path))
             {
-                string[] lines = System.IO.File.ReadAllLines(PATH);
+                string[] lines = System.IO.File.ReadAllLines(path);
+
                 foreach (string line in lines)
                 {
                     string[] lineToTeacher = line.Split(';');
@@ -39,20 +44,16 @@ namespace TeacherRecords
                     Console.WriteLine("\t" + line);
                 }
                 _teachers = teachers;
-            }
-            catch (FileNotFoundException e)
+            } else
             {
                 Console.WriteLine("File not found, should be in the same folder that the app with the name records.txt");
-                Console.WriteLine("Don't delete this file");
+                Console.WriteLine("Don't delete 'records.txt' file");
                 Console.WriteLine("Creating a new file to solve this, will start empty");
 
-                System.IO.File.Create(PATH);
+                System.IO.File.Create(path);
                 _teachers = teachers;
             }
-            catch (IOException ex)
-            {
-                Console.WriteLine(ex);
-            }
+                    
         }
 
         internal IEnumerable<Teacher> GetAllTeachers()
@@ -106,8 +107,8 @@ namespace TeacherRecords
                 _biggestID++;
                 Teacher t = new Teacher(_biggestID, name, c, section);
                 if(_teachers.Count() > 0)
-                    File.AppendAllText(PATH, Environment.NewLine);
-                File.AppendAllText(PATH,t.ToSaveInFile());
+                    File.AppendAllText(path, Environment.NewLine);
+                File.AppendAllText(path,t.ToSaveInFile());
                 _teachers.Add(t);
                 return true;
             }
@@ -116,7 +117,7 @@ namespace TeacherRecords
                 Console.WriteLine("File not found, should be in the same folder that the app with the name records.txt");
                 Console.WriteLine("Creating a new file to solve this, will start empty");
 
-                System.IO.File.Create(PATH);
+                System.IO.File.Create(path);
                 
             }
             catch (IOException ex)
@@ -131,8 +132,8 @@ namespace TeacherRecords
         {
             try
             {
-                var lines = File.ReadAllLines(PATH).Where(line => ! line.Equals(toRemove.ToSaveInFile()) ).ToArray();
-                File.WriteAllLines(PATH, lines);
+                var lines = File.ReadAllLines(path).Where(line => ! line.Equals(toRemove.ToSaveInFile()) ).ToArray();
+                File.WriteAllLines(path, lines);
                 _teachers.Remove(toRemove);
                 return true;
 
@@ -142,7 +143,7 @@ namespace TeacherRecords
                 Console.WriteLine("File not found, should be in the same folder that the app with the name records.txt");
                 Console.WriteLine("Creating a new file to solve this, will start empty");
 
-                System.IO.File.Create(PATH);
+                System.IO.File.Create(path);
 
             }
             catch (IOException ex)
