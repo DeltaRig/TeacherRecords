@@ -9,10 +9,10 @@ namespace TeacherRecords
 {
     class Menu
     {
-        private TeacherBiz teacherBiz;
+        private TeacherBiz _teacherBiz;
         public Menu() {
-            teacherBiz = new TeacherBiz();
-            /*teacherBiz = new TeacherBiz(
+            _teacherBiz = new TeacherBiz();
+            /*_teacherBiz = new _teacherBiz(
                 new List<Teacher>{
                     new Teacher(1L, "Jurema", "200", "Fisic"),
                     new Teacher(2L, "Lucas", "200", "DataBase"),
@@ -33,7 +33,8 @@ namespace TeacherRecords
                 Console.ForegroundColor = ConsoleColor.White;
                 Console.WriteLine("1. See all teachers \n" +
                                   "2. Search teachers \n" + 
-                                  "3. Add new teacher \n" + 
+                                  "3. Add new teacher \n" +
+                                  "4. Remove teacher \n" +
                                   "0. exit");
                 option = Console.ReadLine();
                 switch (option)
@@ -42,7 +43,7 @@ namespace TeacherRecords
                         Console.ForegroundColor = ConsoleColor.Yellow;
                         Console.WriteLine("List of teachers: ");
                         Console.ForegroundColor = ConsoleColor.White;
-                        PrintList(teacherBiz.GetAllTeachers());
+                        PrintList(_teacherBiz.GetAllTeachers());
                         break;
                     case "2":
                         SearchBy();
@@ -50,9 +51,11 @@ namespace TeacherRecords
                     case "3":
                         AddNewTeacher();
                         break;
+                    case "4":
+                        RemoveTeacher();
+                        break;
                     case "0":
                         return;
-                        break;
                     default:
                         Console.ForegroundColor = ConsoleColor.Yellow;
                         Console.WriteLine("Invalid option, try again");
@@ -96,15 +99,16 @@ namespace TeacherRecords
                     try
                     {
                         id = long.Parse(answer);
+                        Console.ForegroundColor = ConsoleColor.Yellow;
+                        Console.WriteLine("List of teachers: ");
+                        Console.ForegroundColor = ConsoleColor.White;
+                        PrintList(_teacherBiz.GetTeacherByID(id));
                     }
                     catch (IOException ex)
                     {
                         Console.WriteLine("You should write a numeric, " + ex);
                     }
-                    Console.ForegroundColor = ConsoleColor.Yellow;
-                    Console.WriteLine("List of teachers: ");
-                    Console.ForegroundColor = ConsoleColor.White;
-                    PrintList(teacherBiz.GetTeachersByID(id));
+
                     break;
                 case "2":
                     Console.WriteLine("What is the name's teacher that you want search?");
@@ -112,7 +116,7 @@ namespace TeacherRecords
                     Console.ForegroundColor = ConsoleColor.Yellow;
                     Console.WriteLine("List of teachers: ");
                     Console.ForegroundColor = ConsoleColor.White;
-                    PrintList(teacherBiz.GetTeachersByName(answer));
+                    PrintList(_teacherBiz.GetTeachersByName(answer));
                     break;
                 case "3":
                     Console.WriteLine("What is the class's teacher that you want search?");
@@ -120,7 +124,7 @@ namespace TeacherRecords
                     Console.ForegroundColor = ConsoleColor.Yellow;
                     Console.WriteLine("List of teachers: ");
                     Console.ForegroundColor = ConsoleColor.White;
-                    PrintList(teacherBiz.GetTeachersByClass(answer));
+                    PrintList(_teacherBiz.GetTeachersByClass(answer));
                     break;
                 case "4":
                     Console.WriteLine("What is the section's teacher that you want search?");
@@ -128,7 +132,7 @@ namespace TeacherRecords
                     Console.ForegroundColor = ConsoleColor.Yellow;
                     Console.WriteLine("List of teachers: ");
                     Console.ForegroundColor = ConsoleColor.White;
-                    PrintList(teacherBiz.GetTeachersBySection(answer));
+                    PrintList(_teacherBiz.GetTeachersBySection(answer));
                     break;
                 default:
                     Console.ForegroundColor = ConsoleColor.Yellow;
@@ -165,16 +169,68 @@ namespace TeacherRecords
 
             } while (!verify.Equals("1"));
 
-            if( teacherBiz.AddTeacher(name, classe, section))
+            if( _teacherBiz.AddTeacher(name, classe, section))
             {
                 Console.ForegroundColor = ConsoleColor.Blue;
                 Console.WriteLine("Teacher added with success!");
                 Console.ForegroundColor = ConsoleColor.White;
             }
+        }
 
-            
+        private void RemoveTeacher()
+        {
+            IEnumerable<Teacher> all = _teacherBiz.GetAllTeachers();
+            if(all.Count() == 0)
+            {
+                Console.WriteLine("No have teachers to remove");
+                return;
+            }
+            Console.ForegroundColor = ConsoleColor.Yellow;
+            Console.WriteLine("List of teachers: ");
+            Console.ForegroundColor = ConsoleColor.White;
+            PrintList(all);
 
+            Console.WriteLine("What is the ID's teacher?");
+            string answer = Console.ReadLine();
 
+            long id = -1L;
+            Boolean removed = false;
+            try
+            {
+                id = long.Parse(answer);
+
+                IEnumerable<Teacher> toRemove = _teacherBiz.GetTeacherByID(id);
+
+                if(toRemove.Count() == 0)
+                {
+                    Console.WriteLine("This don't correspond to a ID from the options");
+                    return;
+                }
+                    
+                Console.WriteLine(toRemove.First());
+                Console.ForegroundColor = ConsoleColor.White;
+                Console.WriteLine("1. Confirm that you would like remove this teacher from database\n" +
+                                  "0. Cancel and come back to menu\n");
+                String verify = Console.ReadLine();
+                if (verify.Equals("0"))
+                    return;
+                removed = _teacherBiz.RemoveTeacher(toRemove.First());
+            }
+            catch (IOException ex)
+            {
+                Console.WriteLine("You should write a numeric");
+            }
+            if (removed)
+            {
+                Console.ForegroundColor = ConsoleColor.Blue;
+                Console.WriteLine("Teacher removed with success!");
+            }
+            else
+            {
+                Console.ForegroundColor = ConsoleColor.DarkRed;
+                Console.WriteLine("Problem to remove");
+            }
+            Console.ForegroundColor = ConsoleColor.White;
         }
     }
 }

@@ -16,6 +16,7 @@ namespace TeacherRecords
         public TeacherBiz()
         {
             _teachers = new List<Teacher>();
+            _biggestID = 0;
             UpdateDataCache();
         }
 
@@ -126,13 +127,31 @@ namespace TeacherRecords
         }
 
         // able to remove teacher
-        internal Boolean RemoveTeacher(long id)
+        internal Boolean RemoveTeacher(Teacher toRemove)
         {
-            return false;
+            try
+            {
+                var lines = File.ReadAllLines(PATH).Where(line => ! line.Equals(toRemove.ToSaveInFile()) ).ToArray();
+                File.WriteAllLines(PATH, lines);
+                _teachers.Remove(toRemove);
+                return true;
 
-        //        var lines = File.ReadAllLines(usersPath).Where(line => line.Trim() != item).ToArray();
-        //      File.WriteAllLines(usersPath, lines);
+            }
+            catch (FileNotFoundException e) // to don't broke if someone delete the file while the program is running
+            {
+                Console.WriteLine("File not found, should be in the same folder that the app with the name records.txt");
+                Console.WriteLine("Creating a new file to solve this, will start empty");
+
+                System.IO.File.Create(PATH);
+
+            }
+            catch (IOException ex)
+            {
+                Console.WriteLine(ex);
+            }
+            return false;
         }
+
         // able to update teacher
 
     }

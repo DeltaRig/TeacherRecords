@@ -8,7 +8,7 @@ namespace TeacherRecords
 {
     class Teacher
     {
-        private long _id;
+        private long _id; // unique
         private string _name;
         private string _class;
         private string _section;
