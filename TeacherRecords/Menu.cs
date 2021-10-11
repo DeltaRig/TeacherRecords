@@ -12,15 +12,6 @@ namespace TeacherRecords
         private TeacherBiz _teacherBiz;
         public Menu() {
             _teacherBiz = new TeacherBiz();
-            /*_teacherBiz = new _teacherBiz(
-                new List<Teacher>{
-                    new Teacher(1L, "Jurema", "200", "Fisic"),
-                    new Teacher(2L, "Lucas", "200", "DataBase"),
-                    new Teacher(3L, "Jorge", "201", "Math"),
-                    new Teacher(4L, "Carlos", "202", "Literature"),
-                    new Teacher(5L, "Carlos", "302", "Quimica")
-                }
-            );*/
         }
         public void Start()
         {

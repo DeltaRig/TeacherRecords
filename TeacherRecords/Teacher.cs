@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace TeacherRecords
 {
-    class Teacher
+    class Teacher : ITeacher
     {
         private long _id; // unique
         private string _name;
@@ -46,7 +46,7 @@ namespace TeacherRecords
             set => _section = value;
         }
 
-        public override string ToString()
+        public string ToString()
         {
             return "[" + _id + "] Name:" + _name + "; Class:" + _class + "; Section:" + _section + ";";
         }
