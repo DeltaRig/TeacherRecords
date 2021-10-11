@@ -6,9 +6,10 @@ using System.Threading.Tasks;
 
 namespace TeacherRecords.Interfaces
 {
-    interface ITeacher
+    interface IMenu
     {
-        string ToSaveInFile();
-        string GetToString();
+        Boolean CanStart();
+        void Start();
+
     }
 }

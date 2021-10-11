@@ -47,7 +47,7 @@ namespace TeacherRecords
             set => _section = value;
         }
 
-        public string ToString()
+        public string GetToString()
         {
             return "[" + _id + "] Name:" + _name + "; Class:" + _class + "; Section:" + _section + ";";
         }
