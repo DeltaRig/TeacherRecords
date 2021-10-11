@@ -56,7 +56,7 @@ namespace TeacherRecords
                     
         }
 
-        internal IEnumerable<Teacher> GetAllTeachers()
+        public IEnumerable<Teacher> GetAllTeachers()
         {
             return _teachers;
         }
@@ -64,7 +64,7 @@ namespace TeacherRecords
         /**
          * @return teacher by ID
          */
-        internal IEnumerable<Teacher> GetTeacherByID(long id)
+        public IEnumerable<Teacher> GetTeacherByID(long id)
         {
             var teachersByID = from teacher in _teachers
                                  where teacher.ID == id
@@ -75,7 +75,7 @@ namespace TeacherRecords
         /**
         * @return teacher by name
         */
-        internal IEnumerable<Teacher> GetTeachersByName(string name)
+        public IEnumerable<Teacher> GetTeachersByName(string name)
         {
             var teachersByName = from teacher in _teachers
                                  where teacher.Name.ToUpper() == name.ToUpper()
@@ -83,7 +83,7 @@ namespace TeacherRecords
             return teachersByName;
         }
 
-        internal IEnumerable<Teacher> GetTeachersByClass(string c)
+        public IEnumerable<Teacher> GetTeachersByClass(string c)
         {
             var teachersByClass = from teacher in _teachers
                                  where teacher.Class.ToUpper() == c.ToUpper()
@@ -91,7 +91,7 @@ namespace TeacherRecords
             return teachersByClass;
         }
 
-        internal IEnumerable<Teacher> GetTeachersBySection(string s)
+        public IEnumerable<Teacher> GetTeachersBySection(string s)
         {
             var teachersBySection = from teacher in _teachers
                                   where teacher.Section.ToUpper() == s.ToUpper()
@@ -100,7 +100,7 @@ namespace TeacherRecords
         }
 
         // able to add teacher
-        internal Boolean AddTeacher(string name, string c, string section)
+        public Boolean AddTeacher(string name, string c, string section)
         {
             try
             {
@@ -128,7 +128,7 @@ namespace TeacherRecords
         }
 
         // able to remove teacher
-        internal Boolean RemoveTeacher(Teacher toRemove)
+        public Boolean RemoveTeacher(Teacher toRemove)
         {
             try
             {
@@ -154,7 +154,7 @@ namespace TeacherRecords
         }
 
         // able to update teacher
-        internal Boolean UpdateTeacher(long id, string name, string classe, string section) {
+        public Boolean UpdateTeacher(long id, string name, string classe, string section) {
             int position = SearchById(id);
             if(position == -1)
                 return false;
