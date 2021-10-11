@@ -20,40 +20,47 @@ namespace TeacherRecords
             path = dir + FILENAME;
             _teachers = new List<Teacher>();
             _biggestID = 0;
-            UpdateDataCache();
         }
 
-        public void UpdateDataCache()
+        public Boolean UpdateDataCache()
         {
             List<Teacher> teachers = new List<Teacher>();
-            Console.WriteLine(path);
-            if (File.Exists(path))
+            try
             {
-                string[] lines = System.IO.File.ReadAllLines(path);
-
-                foreach (string line in lines)
+                if (File.Exists(path))
                 {
-                    string[] lineToTeacher = line.Split(';');
+                    string[] lines = System.IO.File.ReadAllLines(path);
 
-                    long currentID = long.Parse(lineToTeacher[0]);
-                    if (currentID > _biggestID)
-                        _biggestID = currentID;
+                    foreach (string line in lines)
+                    {
+                        string[] lineToTeacher = line.Split(';');
 
-                    teachers.Add(new Teacher(currentID, lineToTeacher[1], lineToTeacher[2], lineToTeacher[3]));
+                        long currentID = long.Parse(lineToTeacher[0]);
+                        if (currentID > _biggestID)
+                            _biggestID = currentID;
 
-                    Console.WriteLine("\t" + line);
+                        teachers.Add(new Teacher(currentID, lineToTeacher[1], lineToTeacher[2], lineToTeacher[3]));
+
+                        Console.WriteLine("\t" + line);
+                    }
+                    _teachers = teachers;
+                    return true;
                 }
-                _teachers = teachers;
-            } else
-            {
-                Console.WriteLine("File not found, should be in the same folder that the app with the name records.txt");
-                Console.WriteLine("Don't delete 'records.txt' file");
-                Console.WriteLine("Creating a new file to solve this, will start empty");
+                else
+                {
+                    Console.WriteLine("File not found, should be in the same folder that the app with the name records.txt");
+                    Console.WriteLine("Don't delete 'records.txt' file");
+                    Console.WriteLine("Creating a new file to solve this, will start empty");
 
-                System.IO.File.Create(path);
-                _teachers = teachers;
+                    System.IO.File.Create(path);
+                    _teachers = teachers;
+                }
             }
-                    
+            catch (Exception e)
+            {
+                Console.WriteLine("Something wrong");
+            }
+            return false;
         }
 
         public IEnumerable<Teacher> GetAllTeachers()

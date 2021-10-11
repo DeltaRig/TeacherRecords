@@ -13,12 +13,16 @@ namespace TeacherRecords
         public Menu() {
             _teacherBiz = new TeacherBiz();
         }
+
+        public Boolean CanStart()
+        {
+            return _teacherBiz.UpdateDataCache();
+        }
+
         public void Start()
         {
             string option = "";
             do {
-                
-
                 Console.ForegroundColor = ConsoleColor.Green;
                 Console.WriteLine("\nWellcome to a Teacher Records's Rainbow School");
                 Console.ForegroundColor = ConsoleColor.White;
@@ -49,9 +53,7 @@ namespace TeacherRecords
                     case "0":
                         return;
                     default:
-                        Console.ForegroundColor = ConsoleColor.Yellow;
-                        Console.WriteLine("Invalid option, try again");
-                        Console.ForegroundColor = ConsoleColor.White;
+                        Default();
                         break;
                 }
             } while (!option.Equals("0"));
@@ -93,54 +95,78 @@ namespace TeacherRecords
             switch (answer)
             {
                 case "1":
-                    Console.WriteLine("What is the ID's teacher that you want search?");
-                    answer = Console.ReadLine();
-                    long id = -1L;
-                    try
-                    {
-                        id = long.Parse(answer);
-                        Console.ForegroundColor = ConsoleColor.Yellow;
-                        Console.WriteLine("List of teachers: ");
-                        Console.ForegroundColor = ConsoleColor.White;
-                        PrintList(_teacherBiz.GetTeacherByID(id));
-                    }
-                    catch (IOException ex)
-                    {
-                        Console.WriteLine("You should write a numeric, " + ex);
-                    }
-
+                    SearchByID();
                     break;
                 case "2":
-                    Console.WriteLine("What is the name's teacher that you want search?");
-                    answer = Console.ReadLine();
-                    Console.ForegroundColor = ConsoleColor.Yellow;
-                    Console.WriteLine("List of teachers: ");
-                    Console.ForegroundColor = ConsoleColor.White;
-                    PrintList(_teacherBiz.GetTeachersByName(answer));
+                    SearchByName();
                     break;
                 case "3":
-                    Console.WriteLine("What is the class's teacher that you want search?");
-                    answer = Console.ReadLine();
-                    Console.ForegroundColor = ConsoleColor.Yellow;
-                    Console.WriteLine("List of teachers: ");
-                    Console.ForegroundColor = ConsoleColor.White;
-                    PrintList(_teacherBiz.GetTeachersByClass(answer));
+                    SearchByClass();
                     break;
                 case "4":
-                    Console.WriteLine("What is the section's teacher that you want search?");
-                    answer = Console.ReadLine();
-                    Console.ForegroundColor = ConsoleColor.Yellow;
-                    Console.WriteLine("List of teachers: ");
-                    Console.ForegroundColor = ConsoleColor.White;
-                    PrintList(_teacherBiz.GetTeachersBySection(answer));
+                    SearchBySection();
                     break;
                 default:
-                    Console.ForegroundColor = ConsoleColor.Yellow;
-                    Console.WriteLine("Invalid option, try again");
-                    Console.ForegroundColor = ConsoleColor.White;
+                    Default();
                     break;
             }
             
+        }
+
+        private void SearchByID()
+        {
+            Console.WriteLine("What is the ID's teacher that you want search?");
+            string answer = Console.ReadLine();
+            long id = -1L;
+            try
+            {
+                id = long.Parse(answer);
+                Console.ForegroundColor = ConsoleColor.Yellow;
+                Console.WriteLine("List of teachers: ");
+                Console.ForegroundColor = ConsoleColor.White;
+                PrintList(_teacherBiz.GetTeacherByID(id));
+            }
+            catch (IOException ex)
+            {
+                Console.WriteLine("You should write a numeric, " + ex);
+            }
+        }
+
+        private void SearchByName()
+        {
+            Console.WriteLine("What is the name's teacher that you want search?");
+            string answer = Console.ReadLine();
+            Console.ForegroundColor = ConsoleColor.Yellow;
+            Console.WriteLine("List of teachers: ");
+            Console.ForegroundColor = ConsoleColor.White;
+            PrintList(_teacherBiz.GetTeachersByName(answer));
+        }
+
+        private void SearchByClass()
+        {
+            Console.WriteLine("What is the class's teacher that you want search?");
+            string answer = Console.ReadLine();
+            Console.ForegroundColor = ConsoleColor.Yellow;
+            Console.WriteLine("List of teachers: ");
+            Console.ForegroundColor = ConsoleColor.White;
+            PrintList(_teacherBiz.GetTeachersByClass(answer));
+        }
+
+        private void SearchBySection()
+        {
+            Console.WriteLine("What is the section's teacher that you want search?");
+            string answer = Console.ReadLine();
+            Console.ForegroundColor = ConsoleColor.Yellow;
+            Console.WriteLine("List of teachers: ");
+            Console.ForegroundColor = ConsoleColor.White;
+            PrintList(_teacherBiz.GetTeachersBySection(answer));
+        }
+
+        private void Default()
+        {
+            Console.ForegroundColor = ConsoleColor.Yellow;
+            Console.WriteLine("Invalid option, try again");
+            Console.ForegroundColor = ConsoleColor.White;
         }
 
         private void AddNewTeacher()
