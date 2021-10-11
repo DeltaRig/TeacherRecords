@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace TeacherRecords
 {
-    class TeacherBiz
+    class TeacherBiz : ITeacherBiz
     {
         private List<Teacher> _teachers;
         private long _biggestID;
@@ -112,7 +112,7 @@ namespace TeacherRecords
                 _teachers.Add(t);
                 return true;
             }
-            catch (FileNotFoundException e) // to don't broke if someone delete the file while the program is running
+            catch (FileNotFoundException) // to don't broke if someone delete the file while the program is running
             {
                 Console.WriteLine("File not found, should be in the same folder that the app with the name records.txt");
                 Console.WriteLine("Creating a new file to solve this, will start empty");
@@ -138,7 +138,7 @@ namespace TeacherRecords
                 return true;
 
             }
-            catch (FileNotFoundException e) // to don't broke if someone delete the file while the program is running
+            catch (FileNotFoundException) // to don't broke if someone delete the file while the program is running
             {
                 Console.WriteLine("File not found, should be in the same folder that the app with the name records.txt");
                 Console.WriteLine("Creating a new file to solve this, will start empty");
@@ -154,6 +154,80 @@ namespace TeacherRecords
         }
 
         // able to update teacher
+        internal Boolean UpdateTeacher(long id, string name, string classe, string section) {
+            int position = SearchById(id);
+            if(position == -1)
+                return false;
+            if (!String.IsNullOrEmpty(name))
+                _teachers[position].Name = name;
+            if (!String.IsNullOrEmpty(classe))
+                _teachers[position].Class = classe;
+            if (!String.IsNullOrEmpty(section))
+                _teachers[position].Section = section;
 
+            try
+            {
+                File.WriteAllLines(path, PassToString());
+                return true;
+            }
+            catch (IOException ex)
+            {
+                Console.WriteLine(ex);
+            }
+            return false;
+        }
+
+        /// <summary>
+        /// Method <c>SearchById</c> search a teacher in the list by ID
+        /// </summary>
+        /// <param name="search">Is the ID that will be search</param>
+        /// <returns>Return the position or -1 if don't find</returns>
+        private int SearchById(long search)
+        {
+            int minNum = 0;
+            int maxNum = _teachers.Count() - 1;
+
+            int foundElem = -1;
+
+            while (minNum <= maxNum && foundElem == -1)
+            {
+                int mid;
+                if (search < _teachers.Count())
+                    mid = (int)search;
+                else
+                    mid = (minNum + maxNum) / 2;
+                if (search == _teachers[mid].ID)
+                {
+                    foundElem = mid;
+                    break;
+                }
+                else if (search < _teachers[mid].ID)
+                {
+                    maxNum = mid - 1;
+                }
+                else
+                {
+                    minNum = mid + 1;
+                }
+            }
+            return foundElem;
+        }
+
+        /// <summary>
+        /// Method <c>PassToString</c> convert the teachers's list to a string[] in the format to save in the file
+        /// </summary>
+        /// <returns>The array of teacher to save in the file</returns>
+        private string[] PassToString() {
+            string[] teachersString = new string[_teachers.Count()];
+
+            int i = 0;
+            foreach(Teacher t in _teachers)
+            {
+                teachersString[i] = t.ToSaveInFile();
+                i++;
+            }
+
+            return teachersString;
+        }
     }
 }

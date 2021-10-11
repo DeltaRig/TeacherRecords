@@ -41,10 +41,7 @@ namespace TeacherRecords
                 switch (option)
                 {
                     case "1":
-                        Console.ForegroundColor = ConsoleColor.Yellow;
-                        Console.WriteLine("List of teachers: ");
-                        Console.ForegroundColor = ConsoleColor.White;
-                        PrintList(_teacherBiz.GetAllTeachers());
+                        ShowAllTeachers();
                         break;
                     case "2":
                         SearchBy();
@@ -54,6 +51,9 @@ namespace TeacherRecords
                         break;
                     case "4":
                         RemoveTeacher();
+                        break;
+                    case "5":
+                        UpdateTeacher();
                         break;
                     case "0":
                         return;
@@ -65,6 +65,14 @@ namespace TeacherRecords
                 }
             } while (!option.Equals("0"));
 
+        }
+
+        private void ShowAllTeachers()
+        {
+            Console.ForegroundColor = ConsoleColor.Yellow;
+            Console.WriteLine("List of teachers: ");
+            Console.ForegroundColor = ConsoleColor.White;
+            PrintList(_teacherBiz.GetAllTeachers());
         }
 
         private void PrintList(IEnumerable<Teacher> list)
@@ -232,6 +240,48 @@ namespace TeacherRecords
                 Console.WriteLine("Problem to remove");
             }
             Console.ForegroundColor = ConsoleColor.White;
+        }
+
+        private void UpdateTeacher()
+        {
+            ShowAllTeachers();
+            Console.WriteLine("What is the ID's teacher that you want search?");
+            String answer = Console.ReadLine();
+
+            long id = -1L;
+            try
+            {
+                id = long.Parse(answer);
+                Console.ForegroundColor = ConsoleColor.Yellow;
+                Console.WriteLine("This is the teacher that will be update:");
+                Console.ForegroundColor = ConsoleColor.White;
+                PrintList(_teacherBiz.GetTeacherByID(id));
+            }
+            catch (IOException ex)
+            {
+                Console.WriteLine("You should write a numeric, " + ex);
+                return;
+            }
+
+            string name = GetInfoToUpdate("name");
+            string classe = GetInfoToUpdate("class");
+            string section = GetInfoToUpdate("section");
+
+            _teacherBiz.UpdateTeacher(id, name, classe, section);
+
+        }
+
+        private string GetInfoToUpdate(string variable) {
+            string answer;
+            Console.WriteLine("Do you want update the "+ variable+"?\nY (Yes) or N (No)");
+            answer = Console.ReadLine();
+
+            if (answer.Contains("Y"))
+            {
+                Console.WriteLine("What is the "+ variable + "s teacher?");
+                return Console.ReadLine();
+            }
+            return null;
         }
     }
 }
