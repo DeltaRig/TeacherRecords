@@ -7,6 +7,9 @@ using System.Threading.Tasks;
 
 namespace TeacherRecords
 {
+    /// <summary>
+    /// Class <c>TeacherBiz</c> store, update and have methods to consult the data about teachers
+    /// </summary>
     class TeacherBiz : ITeacherBiz
     {
         private List<Teacher> _teachers;
@@ -68,9 +71,6 @@ namespace TeacherRecords
             return _teachers;
         }
 
-        /**
-         * @return teacher by ID
-         */
         public IEnumerable<Teacher> GetTeacherByID(long id)
         {
             var teachersByID = from teacher in _teachers
@@ -79,9 +79,6 @@ namespace TeacherRecords
             return teachersByID;
         }
 
-        /**
-        * @return teacher by name
-        */
         public IEnumerable<Teacher> GetTeachersByName(string name)
         {
             var teachersByName = from teacher in _teachers

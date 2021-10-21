@@ -7,6 +7,9 @@ using TeacherRecords.Interfaces;
 
 namespace TeacherRecords
 {
+    /// <summary>
+    /// Class <c>Teacher</c> have all methods and attributes necessarys for a teacher.
+    /// </summary>
     class Teacher : ITeacher
     {
         private long _id; // unique

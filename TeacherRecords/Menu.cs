@@ -7,6 +7,9 @@ using System.Threading.Tasks;
 
 namespace TeacherRecords
 {
+    /// <summary>
+    /// Class <c>Menu</c> is a class to show the menu to user, to interact with TeacherBiz and show what the user choose in menu.
+    /// </summary>
     class Menu
     {
         private TeacherBiz _teacherBiz;
