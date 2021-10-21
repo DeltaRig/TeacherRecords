@@ -236,10 +236,5 @@ namespace TeacherRecords
 
             return teachersString;
         }
-
-        void ITeacherBiz.UpdateDataCache()
-        {
-            throw new NotImplementedException();
-        }
     }
 }

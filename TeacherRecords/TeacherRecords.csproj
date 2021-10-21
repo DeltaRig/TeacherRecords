@@ -43,6 +43,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Interfaces\IMenu.cs" />
     <Compile Include="Interfaces\ITeacher.cs" />
     <Compile Include="Interfaces\ITeacherBiz.cs" />
     <Compile Include="Menu.cs" />
