@@ -82,7 +82,7 @@ namespace TeacherRecords
             }
             foreach(Teacher t in list)
             {
-                Console.WriteLine(t);
+                Console.WriteLine(t.GetToString());
             }
         }
 
@@ -118,7 +118,7 @@ namespace TeacherRecords
 
         private void SearchByID()
         {
-            Console.WriteLine("What is the ID's teacher that you want search?");
+            Console.WriteLine("What is the teacher's ID that you want search?");
             string answer = Console.ReadLine();
             long id = -1L;
             try
@@ -137,7 +137,7 @@ namespace TeacherRecords
 
         private void SearchByName()
         {
-            Console.WriteLine("What is the name's teacher that you want search?");
+            Console.WriteLine("What is the teacher's name that you want search?");
             string answer = Console.ReadLine();
             Console.ForegroundColor = ConsoleColor.Yellow;
             Console.WriteLine("List of teachers: ");
@@ -147,7 +147,7 @@ namespace TeacherRecords
 
         private void SearchByClass()
         {
-            Console.WriteLine("What is the class's teacher that you want search?");
+            Console.WriteLine("What is the teacher's class that you want search?");
             string answer = Console.ReadLine();
             Console.ForegroundColor = ConsoleColor.Yellow;
             Console.WriteLine("List of teachers: ");
@@ -157,7 +157,7 @@ namespace TeacherRecords
 
         private void SearchBySection()
         {
-            Console.WriteLine("What is the section's teacher that you want search?");
+            Console.WriteLine("What is the teacher's section that you want search?");
             string answer = Console.ReadLine();
             Console.ForegroundColor = ConsoleColor.Yellow;
             Console.WriteLine("List of teachers: ");
@@ -180,11 +180,11 @@ namespace TeacherRecords
             string section;
             do
             {
-                Console.WriteLine("What is the name's teacher?");
+                Console.WriteLine("What is the teacher's name?");
                 name = Console.ReadLine();
-                Console.WriteLine("What is the class's teacher?");
+                Console.WriteLine("What is the teacher's class?");
                 classe = Console.ReadLine();
-                Console.WriteLine("What is the section's teacher?");
+                Console.WriteLine("What is the teacher's section?");
                 section = Console.ReadLine();
                 Console.ForegroundColor = ConsoleColor.Yellow;
                 Console.WriteLine("Name: " + name + "\nClass: " + classe + "\nSection: " + section);
@@ -219,7 +219,7 @@ namespace TeacherRecords
             Console.ForegroundColor = ConsoleColor.White;
             PrintList(all);
 
-            Console.WriteLine("What is the ID's teacher?");
+            Console.WriteLine("What is the teacher's ID?");
             string answer = Console.ReadLine();
 
             long id = -1L;
@@ -236,7 +236,7 @@ namespace TeacherRecords
                     return;
                 }
                     
-                Console.WriteLine(toRemove.First());
+                Console.WriteLine(toRemove.First().GetToString());
                 Console.ForegroundColor = ConsoleColor.White;
                 Console.WriteLine("1. Confirm that you would like remove this teacher from database\n" +
                                   "0. Cancel and come back to menu\n");
@@ -265,17 +265,28 @@ namespace TeacherRecords
         private void UpdateTeacher()
         {
             ShowAllTeachers();
-            Console.WriteLine("What is the ID's teacher that you want search?");
+            Console.WriteLine("What is the teacher's ID that you want search?");
             String answer = Console.ReadLine();
 
             long id = -1L;
             try
             {
                 id = long.Parse(answer);
-                Console.ForegroundColor = ConsoleColor.Yellow;
-                Console.WriteLine("This is the teacher that will be update:");
-                Console.ForegroundColor = ConsoleColor.White;
-                PrintList(_teacherBiz.GetTeacherByID(id));
+                IEnumerable<Teacher> getID = _teacherBiz.GetTeacherByID(id);
+                if (getID.Count() > 0)
+                {
+                    Console.ForegroundColor = ConsoleColor.Yellow;
+                    Console.WriteLine("This is the teacher that will be update:");
+                    Console.ForegroundColor = ConsoleColor.White;
+                    PrintList(getID);
+                } else
+                {
+                    Console.ForegroundColor = ConsoleColor.Cyan;
+                    Console.WriteLine("Invalid ID");
+                    Console.ForegroundColor = ConsoleColor.White;
+                    return;
+                }
+
             }
             catch (IOException ex)
             {

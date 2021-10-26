@@ -159,24 +159,38 @@ namespace TeacherRecords
 
         // able to update teacher
         public Boolean UpdateTeacher(long id, string name, string classe, string section) {
+            Boolean anyModify = false;
+
             int position = SearchById(id);
             if(position == -1)
                 return false;
             if (!String.IsNullOrEmpty(name))
+            {
                 _teachers[position].Name = name;
-            if (!String.IsNullOrEmpty(classe))
-                _teachers[position].Class = classe;
-            if (!String.IsNullOrEmpty(section))
-                _teachers[position].Section = section;
-
-            try
-            {
-                File.WriteAllLines(path, PassToString());
-                return true;
+                
             }
-            catch (IOException ex)
+            if (!String.IsNullOrEmpty(classe))
             {
-                Console.WriteLine(ex);
+                _teachers[position].Class = classe;
+                anyModify = true;
+            }
+            if (!String.IsNullOrEmpty(section))
+            {
+                _teachers[position].Section = section;
+                anyModify = true;
+            }
+
+            if (anyModify)
+            {
+                try
+                {
+                    File.WriteAllLines(path, PassToString());
+                    return true;
+                }
+                catch (IOException ex)
+                {
+                    Console.WriteLine(ex);
+                }
             }
             return false;
         }
