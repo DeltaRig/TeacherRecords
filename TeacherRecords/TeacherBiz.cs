@@ -209,11 +209,7 @@ namespace TeacherRecords
 
             while (minNum <= maxNum && foundElem == -1)
             {
-                int mid;
-                if (search < _teachers.Count())
-                    mid = (int)search;
-                else
-                    mid = (minNum + maxNum) / 2;
+                int mid = (minNum + maxNum) / 2;
                 if (search == _teachers[mid].ID)
                 {
                     foundElem = mid;
